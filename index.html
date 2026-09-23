@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crossover — where fandoms become friends</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EAF6FC;
+    --surface: #FFFFFF;
+    --surface-tint: #DCF0FA;
+    --primary: #2C9CD1;
+    --primary-dark: #164863;
+    --ink: #133247;
+    --ink-soft: #4A6A80;
+    --border: #C6E4F3;
+    --danger-bg: #FDECEC;
+    --danger-ink: #9C3B3B;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  h1, h2, h3, .display {
+    font-family: 'Baloo 2', sans-serif;
+    color: var(--primary-dark);
+    margin: 0;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(234,246,252,0.9);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: 1060px; margin: 0 auto; }
+  .logo { font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: 22px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px; }
+  .logo-mark { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(160deg, var(--primary), var(--primary-dark)); flex-shrink: 0; }
+  .nav-links { display: none; gap: 28px; font-size: 15px; font-weight: 500; }
+  @media (min-width: 720px) { .nav-links { display: flex; } }
+  .btn {
+    display: inline-block; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 15px;
+    padding: 12px 24px; border-radius: 999px; border: none; cursor: pointer;
+    background: var(--primary); color: #fff; text-decoration: none;
+  }
+  .btn-outline { background: transparent; color: var(--primary-dark); border: 1.5px solid var(--primary-dark); }
+
+  .hero { padding: 72px 0 56px; }
+  .hero-inner { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 800px) { .hero-inner { grid-template-columns: 1.1fr 0.9fr; gap: 48px; } }
+  .eyebrow-badge {
+    display: inline-flex; align-items: center; gap: 8px; background: var(--surface-tint);
+    color: var(--primary-dark); font-weight: 600; font-size: 13px; padding: 6px 14px;
+    border-radius: 999px; margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 42px; line-height: 1.12; font-weight: 700; }
+  @media (min-width: 800px) { .hero h1 { font-size: 52px; } }
+  .hero p.lede { font-size: 18px; color: var(--ink-soft); margin: 18px 0 28px; max-width: 46ch; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .hero-art {
+    position: relative; height: 300px; border-radius: 28px;
+    background: linear-gradient(145deg, #BFE6F8 0%, var(--primary) 100%);
+    overflow: hidden;
+  }
+  .hero-art .bubble { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.35); }
+  .hero-art .b1 { width: 120px; height: 120px; top: -30px; right: -20px; }
+  .hero-art .b2 { width: 70px; height: 70px; bottom: 30px; left: 30px; }
+  .hero-art .b3 { width: 40px; height: 40px; top: 100px; right: 90px; background: rgba(255,255,255,0.5); }
+  .hero-art .card {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+    background: rgba(255,255,255,0.92); border-radius: 16px; padding: 16px 18px;
+    font-size: 14px; color: var(--primary-dark); font-weight: 600;
+  }
+
+  section { padding: 56px 0; }
+  .section-head { max-width: 60ch; margin-bottom: 36px; }
+  .section-head h2 { font-size: 30px; font-weight: 700; }
+  .section-head p { color: var(--ink-soft); font-size: 16px; margin-top: 10px; }
+
+  .feature-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .feature-grid { grid-template-columns: repeat(3, 1fr); } }
+  .feature-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    padding: 24px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .feature-icon {
+    width: 40px; height: 40px; border-radius: 12px; background: var(--surface-tint);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  .feature-card h3 { font-size: 18px; font-weight: 600; }
+  .feature-card p { color: var(--ink-soft); font-size: 14.5px; margin: 0; }
+
+  .leaders { background: var(--surface-tint); border-radius: 28px; padding: 44px 32px; }
+  .leader-grid { display: grid; gap: 18px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 640px) { .leader-grid { grid-template-columns: repeat(4, 1fr); } }
+  .leader-card { background: var(--surface); border-radius: 16px; padding: 18px; text-align: center; }
+  .leader-avatar {
+    width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 12px;
+    background: linear-gradient(160deg, var(--primary), var(--primary-dark));
+    display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700;
+  }
+  .leader-card h4 { font-size: 15px; font-weight: 600; margin: 0 0 2px; color: var(--primary-dark); }
+  .leader-card p { font-size: 13px; color: var(--ink-soft); margin: 0; }
+  .add-fandom-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .add-fandom-form input {
+    flex: 1; min-width: 160px; padding: 11px 14px; border-radius: 10px;
+    border: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 14px; background: #fff;
+  }
+  .add-fandom-form .btn { flex-shrink: 0; }
+  .add-fandom-status { font-size: 13.5px; color: var(--ink-soft); margin: 10px 0 0; min-height: 18px; }
+  .add-fandom-status.error { color: var(--danger-ink); }
+
+  .schedule { display: grid; gap: 20px; }
+  @media (min-width: 720px) { .schedule { grid-template-columns: 1fr 1fr; } }
+  .schedule-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px;
+  }
+  .schedule-day { font-size: 13px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.04em; }
+  .schedule-card h3 { font-size: 22px; margin: 8px 0 10px; }
+  .schedule-card p { color: var(--ink-soft); font-size: 15px; margin: 0; }
+
+  .rules-list { display: grid; gap: 14px; }
+  .rule-row {
+    display: flex; gap: 14px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px 20px;
+  }
+  .rule-row .num {
+    flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--surface-tint);
+    color: var(--primary-dark); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center;
+  }
+  .rule-row h4 { font-size: 15.5px; font-weight: 600; margin: 0 0 4px; }
+  .rule-row p { font-size: 14px; color: var(--ink-soft); margin: 0; }
+  .age-flag {
+    display: inline-flex; align-items: center; gap: 8px; background: var(--danger-bg);
+    color: var(--danger-ink); font-weight: 600; font-size: 13px; padding: 8px 16px; border-radius: 999px;
+    margin-bottom: 18px;
+  }
+
+  .cta-band {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 28px; padding: 48px 32px; text-align: center; color: #fff;
+  }
+  .cta-band h2 { color: #fff; font-size: 28px; margin-bottom: 12px; }
+  .cta-band p { color: rgba(255,255,255,0.85); margin-bottom: 24px; }
+  .cta-band .btn { background: #fff; color: var(--primary-dark); }
+
+  footer { padding: 32px 0 48px; text-align: center; color: var(--ink-soft); font-size: 13.5px; }
+
+  ::selection { background: var(--primary); color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-inner">
+    <div class="logo"><span class="logo-mark"></span>Crossover</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#leaders">Fandom leaders</a>
+      <a href="#schedule">Weekly events</a>
+      <a href="#rules">Community rules</a>
+    </div>
+    <a href="#join" class="btn">Join</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow-badge">18+ community</span>
+        <h1>Where fandoms become friends.</h1>
+        <p class="lede">One place for every fandom to hang out, argue about their favorite worlds, and actually get to know each other — across languages, across timezones, across ships.</p>
+        <div class="hero-actions">
+          <a href="#join" class="btn">Join Crossover</a>
+          <a href="#schedule" class="btn btn-outline">See this week's debate</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="bubble b1"></div>
+        <div class="bubble b2"></div>
+        <div class="bubble b3"></div>
+        <div class="card">Tonight, 8pm — Fandom Debate Night: Team Chosen One vs Team Anti-Hero 🎙️</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="section-head">
+      <h2>Built for people who live in their fandoms</h2>
+      <p>Share art, clips, and takes in whatever language you think in — everyone else reads it in theirs.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Auto-translate, everywhere</h3>
+        <p>Posts, comments, and debate transcripts are translated on the fly, so language is never the reason you miss out.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖼️</div>
+        <h3>Pictures, GIFs and clips</h3>
+        <p>Post fan art, reaction GIFs, and short video edits directly in your fandom's space or in open chat.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎙️</div>
+        <h3>Weekly debate night</h3>
+        <p>A different fandom face-off every week, hosted live by that fandom's leader, with a chat that translates in real time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>Art day, every week</h3>
+        <p>A standing weekly thread for fan art, prompts, and collabs — new artists get featured on the front page.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧭</div>
+        <h3>A leader for every fandom</h3>
+        <p>Each fandom space has a leader who sets the tone, runs debate night, and keeps discussions on track.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Zero tolerance for bullying</h3>
+        <p>Harassment, pile-ons, and personal attacks get you removed — leaders and moderators actively enforce this.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="leaders">
+    <div class="leaders">
+      <div class="section-head" style="margin-bottom:28px;">
+        <h2>Fandoms on Crossover</h2>
+        <p>Every fandom space has someone steering the ship. Don't see yours? Add it below.</p>
+      </div>
+      <div class="leader-grid" id="leaderGrid"></div>
+      <form id="addFandomForm" class="add-fandom-form">
+        <input type="text" id="fandomNameInput" placeholder="Fandom name (e.g. Mecha & Anime)" maxlength="40" required>
+        <input type="text" id="leaderNameInput" placeholder="Your name, if you'll lead it" maxlength="30" required>
+        <button type="submit" class="btn btn-outline">Add fandom</button>
+      </form>
+      <p id="addFandomStatus" class="add-fandom-status"></p>
+    </div>
+  </section>
+
+  <script id="fandoms-data" type="application/json">[
+    {"name":"Rin K.","fandom":"Mecha & Anime"},
+    {"name":"Jules M.","fandom":"High Fantasy"},
+    {"name":"Ade O.","fandom":"Sci-Fi & Space Opera"},
+    {"name":"Tia S.","fandom":"Comics & Superheroes"}
+  ]</script>
+
+  <section id="schedule">
+    <div class="section-head">
+      <h2>This week</h2>
+      <p>Two standing traditions, every single week.</p>
+    </div>
+    <div class="schedule">
+      <div class="schedule-card">
+        <div class="schedule-day">Wednesdays, 8pm</div>
+        <h3>Fandom Debate Night</h3>
+        <p>A different pair of fandoms goes head to head each week, hosted live by their leaders. Vote, heckle, and watch the transcript translate in real time.</p>
+      </div>
+      <div class="schedule-card">
+        <div class="schedule-day">Saturdays, all day</div>
+        <h3>Art Day</h3>
+        <p>Post your fan art, sketches, and edits to the weekly thread. A rotating panel of leaders features their favorites on Sunday.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="section-head">
+      <span class="age-flag">Ages 18 and up only</span>
+      <h2>How we keep this a good place to be</h2>
+      <p>Crossover is an adult space. Mature and sexual topics can come up in conversation, and that's allowed within these limits — nothing here is optional.</p>
+    </div>
+    <div class="rules-list">
+      <div class="rule-row">
+        <div class="num">1</div>
+        <div>
+          <h4>Verified 18+ only</h4>
+          <p>Age is checked at signup. No exceptions, no workarounds — accounts found to belong to a minor are removed immediately.</p>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="num">2</div>
+        <div>
+          <h4>No bullying, ever</h4>
+          <p>No harassment, pile-ons, targeted mockery, or personal attacks — about a person, not just their opinion on a fandom. Leaders and moderators enforce this actively, not just on report.</p>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="num">3</div>
+        <div>
+          <h4>Mature topics, discussed with consent and context</h4>
+          <p>Adult and sexual themes tied to fandom content can be discussed in spaces marked for it. No sexual content involving minors or real people, ever, in any form — that's an instant, permanent ban.</p>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="num">4</div>
+        <div>
+          <h4>Debate the take, not the person</h4>
+          <p>Debate night gets heated — that's the fun of it. Attacking someone personally instead of their argument isn't.</p>
+        </div>
+      </div>
+      <div class="rule-row">
+        <div class="num">5</div>
+        <div>
+          <h4>Credit the artist</h4>
+          <p>Reposting art or edits without crediting the original creator isn't allowed, on art day or any other day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="join">
+    <div class="cta-band">
+      <h2>Your fandom is waiting for you.</h2>
+      <p>Sign up, pick your fandoms, and catch this week's debate.</p>
+      <a href="#" class="btn">Create your account</a>
+    </div>
+  </section>
+
+  <footer>
+    Crossover — for people 18 and older. Community-run, leader-led.
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var grid = document.getElementById('leaderGrid');
+  var form = document.getElementById('addFandomForm');
+  var status = document.getElementById('addFandomStatus');
+  var dataEl = document.getElementById('fandoms-data');
+  var fandoms = JSON.parse(dataEl.textContent);
+  var canWrite = false;
+  var artifact = null;
+
+  function initials(name) {
+    var parts = name.trim().split(/\s+/).filter(Boolean);
+    var a = (parts[0] || '?')[0] || '?';
+    var b = (parts.length > 1 ? parts[parts.length - 1][0] : '') || '';
+    return (a + b).toUpperCase();
+  }
+
+  function renderGrid() {
+    grid.innerHTML = fandoms.map(function (f) {
+      return '<div class="leader-card">' +
+        '<div class="leader-avatar">' + initials(f.name) + '</div>' +
+        '<h4>' + f.name + '</h4>' +
+        '<p>Leads ' + f.fandom + '</p>' +
+        '</div>';
+    }).join('');
+  }
+
+  function buildFullHTML(nextFandoms) {
+    var doc = document.documentElement.cloneNode(true);
+    var dataScript = doc.querySelector('#fandoms-data');
+    dataScript.textContent = JSON.stringify(nextFandoms);
+    var scripts = doc.querySelectorAll('script:not(#fandoms-data)');
+    scripts.forEach(function (s) { s.remove(); });
+    var reinsert = document.querySelector('script:last-of-type').outerHTML;
+    doc.querySelector('body').insertAdjacentHTML('beforeend', reinsert);
+    return '<!doctype html>\n' + doc.outerHTML;
+  }
+
+  renderGrid();
+
+  if (window.claude && window.claude.use) {
+    window.claude.use('artifact').then(function (ns) {
+      artifact = ns;
+      canWrite = !!ns;
+    }).catch(function () { canWrite = false; });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nameInput = document.getElementById('leaderNameInput');
+    var fandomInput = document.getElementById('fandomNameInput');
+    var name = nameInput.value.trim();
+    var fandom = fandomInput.value.trim();
+
+    if (!fandom || !name) {
+      status.textContent = 'Enter both a fandom name and your name.';
+      status.className = 'add-fandom-status error';
+      return;
+    }
+
+    status.className = 'add-fandom-status';
+    status.textContent = 'Adding...';
+
+    var next = fandoms.concat([{ name: name, fandom: fandom }]);
+
+    if (!artifact) {
+      status.textContent = "Couldn't save right now — added for this view only.";
+      fandoms = next;
+      renderGrid();
+      form.reset();
+      return;
+    }
+
+    artifact.publish(buildFullHTML(next)).then(function () {
+      status.textContent = 'Added! Saving for everyone...';
+    }).catch(function (err) {
+      if (err && err.code === 'not_writer') {
+        status.textContent = "This view can't save changes here.";
+      } else if (err && err.code === 'conflict') {
+        status.textContent = 'Someone else just updated this — refreshing.';
+      } else {
+        fandoms = next;
+        renderGrid();
+        form.reset();
+        status.textContent = "Couldn't save to the shared page — added for this view only.";
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
